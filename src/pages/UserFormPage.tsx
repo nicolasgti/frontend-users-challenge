@@ -7,6 +7,7 @@ import UserForm from '../components/UserForm';
 import { getUserById, updateUser, createUser } from '../services/userServices'; // você pode adaptar isso
 import ModalGeneric from '../components/ModalGeneric';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const UserFormPage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -25,6 +26,8 @@ const UserFormPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const [error, setError] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState<'success' | 'warning' | 'error'>('success');
+
 
 
   const isEdit = Boolean(id);
@@ -49,27 +52,36 @@ const UserFormPage: React.FC = () => {
 
   const handleSubmit = async () => {
     setError('');
-    try {  
-        const { repetirSenha, senha, ...formSemSenha } = form;
+    try {
+      const { repetirSenha, senha, ...formSemSenha } = form;
+  
       if (isEdit && id) {
-        await updateUser(id, formSemSenha); 
+        await updateUser(id, formSemSenha);
+        setError('Dados salvos com sucesso!');
       } else {
-        await createUser(form); 
+        await createUser(form);
+        setError('Cadastro realizado!');
       }
-      navigate('/users');
+  
+      setAlertSeverity('success');
+      setShowCancelAlert(true);
+  
+      setTimeout(() => {
+        navigate('/users');
+      }, 1200);
+  
     } catch (err: any) {
-        if (err.response && err.response.data && err.response.data.message) {
-          setError(err.response.data.message);
-        } else {
-          setError('Erro ao salvar usuário');
-        }
-        setShowCancelAlert(true);
-        setTimeout(() => {
-          setShowCancelAlert(false);
-        }, 4000);
-        console.error('Erro ao salvar usuário:', err);
+      setAlertSeverity('error');
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('Erro ao salvar usuário');
       }
-    };
+      setShowCancelAlert(true);
+      setTimeout(() => setShowCancelAlert(false), 4000);
+    }
+  };
+  
 
   const handleCancel = () => {
     setError('');
@@ -100,16 +112,17 @@ const UserFormPage: React.FC = () => {
             onClose={() => setModalOpen(false)}
             onConfirm={() => {
                 setModalOpen(false);
-                if (!isEdit) {              
-                    setShowCancelAlert(true);
-                    setTimeout(() => {
-                        navigate('/users');
-                    }, 1200);
-                }
-                else {
+                if (!isEdit) {
+                  setError('Cadastro cancelado');
+                  setAlertSeverity('warning');
+                  setShowCancelAlert(true);
+                  setTimeout(() => {
                     navigate('/users');
+                  }, 1200);
+                } else {
+                  navigate('/users');
                 }
-        }}
+              }}            
         />
         <Snackbar
             open={showCancelAlert}
@@ -119,16 +132,28 @@ const UserFormPage: React.FC = () => {
             >
             <Alert
                 onClose={() => setShowCancelAlert(false)}
-                severity="warning"
+                severity={alertSeverity}
                 variant="filled"
-                sx={{ backgroundColor: '#f57c00', color: 'white', fontWeight: 'bold' }}
+                sx={{
+                backgroundColor:
+                    alertSeverity === 'success'
+                    ? '#43a047'
+                    : alertSeverity === 'warning'
+                    ? '#f57c00'
+                    : '#d32f2f',
+                color: 'white',
+                fontWeight: 'bold',
+                }}
                 iconMapping={{
-                warning: <WarningAmberIcon />,
+                    success: <CheckCircleIcon sx={{ color: '#fff' }} />,
+                    warning: <WarningAmberIcon sx={{ color: '#fff' }} />,
+                    error: <WarningAmberIcon sx={{ color: '#fff' }} />,
                 }}
             >
-                {error ? error : 'Cadastro cancelado'}
+                {error}
             </Alert>
         </Snackbar>
+
     </Box>
   );
 };
