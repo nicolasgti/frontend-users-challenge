@@ -3,6 +3,11 @@ export type User = {
     nome: string;
     email: string;
     matricula: string;
+    senha?: string; 
+    resetPasswordToken?: string;
+    createdAt: Date; 
+    updatedAt: Date;
+    isRoot: boolean;
   };
   
 export type FetchUsersResponse = {

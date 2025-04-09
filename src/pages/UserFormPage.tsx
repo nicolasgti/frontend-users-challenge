@@ -53,13 +53,14 @@ const UserFormPage: React.FC = () => {
   const handleSubmit = async () => {
     setError('');
     try {
-      const { repetirSenha, senha, ...formSemSenha } = form;
+      const { repetirSenha, ...formSemSenhaRepetida } = form;
+      const { senha, ...formSemSenha } = formSemSenhaRepetida;
   
       if (isEdit && id) {
         await updateUser(id, formSemSenha);
         setError('Dados salvos com sucesso!');
       } else {
-        await createUser(form);
+        await createUser(formSemSenhaRepetida);
         setError('Cadastro realizado!');
       }
   

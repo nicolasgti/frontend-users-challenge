@@ -14,6 +14,7 @@ import {
   import { deleteUser, fetchUsers } from '../services/userServices';
   import ModalGeneric from './ModalGeneric';
   import { User } from '../types/userTypes';
+  import UserDrawer from './UserDrawer';
   import { useNavigate } from 'react-router-dom';
 
   
@@ -30,6 +31,10 @@ import {
   
     const [modalOpen, setModalOpen] = useState(false);
     const [userToDelete, setUserToDelete] = useState<User | null>(null);
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [userToView, setUserToView] = useState<User | null>(null);
+
   
     const handleOpenModal = (user: User) => {
       setUserToDelete(user);
@@ -74,6 +79,11 @@ import {
       setRowsPerPage(Number(event.target.value));
       setPage(1);
     };
+
+    const handleViewUser = (user: User) => {
+      setUserToView(user);
+      setDrawerOpen(true);
+    };
   
     return (
       <Box> 
@@ -103,7 +113,9 @@ import {
             >
               <Typography sx={{ color: '#00231d' }}>{user.nome}</Typography>
               <Stack direction="row" spacing={1}>
-                <IconButton><Visibility sx={{ color: '#00231d' }} /></IconButton>
+                <IconButton onClick={() => handleViewUser(user)}>
+                  <Visibility sx={{ color: '#00231d' }} />
+                </IconButton>
                 <IconButton onClick={() => navigate(`/usuarios/editar/${user.id}`)}>
                   <Edit sx={{ color: '#00231d' }} />
                 </IconButton>
@@ -150,6 +162,11 @@ import {
           onConfirm={handleConfirmDelete}
           confirmText="Sim"
           cancelText="Não"
+        />
+        <UserDrawer
+          open={drawerOpen}
+          user={userToView}
+          onClose={() => setDrawerOpen(false)}
         />
       </Box>
     );

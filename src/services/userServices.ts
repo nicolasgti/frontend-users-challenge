@@ -24,12 +24,14 @@ export const getUserById = async (id: string): Promise<User> => {
   return res.data;
 };
 
-export const createUser = async (data: any) => {
-  const res = await api.post('/users', data);
+export const createUser = async (data: Partial<User>) => {
+  const { id, resetPasswordToken, createdAt, updatedAt, isRoot, ...payload } = data; 
+  const res = await api.post('/users', payload);
   return res.data;
 };
 
-export const updateUser = async (id: string, data: any) => {
-  const res = await api.put(`/users/${id}`, data);
+export const updateUser = async (id: string, data: Partial<User>) => {
+  const { senha, resetPasswordToken, createdAt, updatedAt, isRoot, ...payload } = data; 
+  const res = await api.put(`/users/${id}`, payload);
   return res.data;
 };
