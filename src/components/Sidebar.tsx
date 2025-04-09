@@ -161,7 +161,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, toggleSidebar }) => {
         {/* RODAPÉ */}
         <Box position="absolute" bottom={16} left={open ? 24 : 8}>
           {open ? (
-            <Box>
+            <Box display="flex" flexDirection="column" alignItems="start">
               <Typography variant="body2" color="#fff">
                 © WenLock
               </Typography>
@@ -169,7 +169,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, toggleSidebar }) => {
                 Power by Conecthus 
               </Typography>
               <Typography variant="caption" color="#ccc">
-                 V{VERSION}
+                 V {VERSION}
               </Typography>
             </Box>
           ) : (

@@ -8,6 +8,7 @@ import LoadingScreen from './pages/LoadingScreen';
 import PrivateRoute from "./routes/PrivateRoute";
 import UsersPage from "./pages/UsersPage";
 import HomePage from "./pages/HomePage";
+import UserFormPage from "./pages/UserFormPage";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -46,6 +47,16 @@ export default function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/usuarios/novo" element={
+          <PrivateRoute>
+            <UserFormPage />
+          </PrivateRoute>}
+        />
+        <Route path="/usuarios/editar/:id" element={
+          <PrivateRoute>
+            <UserFormPage />
+          </PrivateRoute>
+          } />
       </Routes>
     </BrowserRouter>
   )

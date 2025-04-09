@@ -14,10 +14,12 @@ import {
   import { deleteUser, fetchUsers } from '../services/userServices';
   import ModalGeneric from './ModalGeneric';
   import { User } from '../types/userTypes';
+  import { useNavigate } from 'react-router-dom';
 
   
   const UserList: React.FC<{ search: string }> = ({ search }) => {
     const token = localStorage.getItem('token') || '';
+    const navigate = useNavigate();
     const loggedUser = JSON.parse(localStorage.getItem('user') || 'null');
   
     const [users, setUsers] = useState<User[]>([]);
@@ -102,7 +104,9 @@ import {
               <Typography sx={{ color: '#00231d' }}>{user.nome}</Typography>
               <Stack direction="row" spacing={1}>
                 <IconButton><Visibility sx={{ color: '#00231d' }} /></IconButton>
-                <IconButton><Edit sx={{ color: '#00231d' }} /></IconButton>
+                <IconButton onClick={() => navigate(`/usuarios/editar/${user.id}`)}>
+                  <Edit sx={{ color: '#00231d' }} />
+                </IconButton>
                 {user.id !== loggedUser?.id && (
                   <IconButton onClick={() => handleOpenModal(user)}>
                     <Delete sx={{ color: '#00231d' }} />

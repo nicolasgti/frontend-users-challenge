@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001',
@@ -20,10 +19,12 @@ return config;
 api.interceptors.response.use(
 (response) => response,
 (error) => {
-    const navigate = useNavigate();
     
-    if (error.response.status === 401) {
-        navigate('/login', { replace: true });
+    if (error.response?.status === 401) {
+        console.warn('Sessão expirada, redirecionando...');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
     }
     return Promise.reject(error);
 }
