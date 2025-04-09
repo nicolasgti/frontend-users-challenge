@@ -55,7 +55,13 @@ import {
         const result = await response.json(); // tenta pegar a resposta
     
         if (!response.ok) {
-          throw new Error(result.message || 'Erro inesperado');
+          // Verifica se o erro é relacionado ao e-mail inválido
+          if (result.message && result.message.toLowerCase().includes('não')) {
+            setErrorEmail('E-mail inválido'); // Define o erro no campo de e-mail
+          } else {
+            throw new Error(result.message || 'Erro inesperado');
+          }
+          return;
         }
     
         setTimeout(() => setOpenModal(true), 500);
@@ -72,7 +78,7 @@ import {
           height: '100vh',
           display: 'flex',
           flexDirection: 'row',
-          backgroundColor: '#0a1f3d',
+          backgroundColor: '#0A1F3D',
         }}
       >
         {/* Lado esquerdo: ilustração ou logo */}
@@ -115,15 +121,15 @@ import {
               margin="normal"
               variant="outlined"
               value={email}
-              error={Boolean(errorEmail)}
-              helperText={errorEmail}
+              error={Boolean(errorEmail)} // Define o estado de erro
+              helperText={errorEmail} // Exibe a mensagem de erro
               onChange={(e) => setEmail(e.target.value)}
             />
   
             <Button
               variant="contained"
               fullWidth
-              sx={{ mt: 2, backgroundColor: '#00b6bd' }}
+              sx={{ mt: 2, backgroundColor: '#0290A4' }}
               onClick={handleRecover}
             >
               Recuperar
