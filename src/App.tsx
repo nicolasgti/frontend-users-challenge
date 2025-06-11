@@ -9,6 +9,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import UsersPage from "./pages/UsersPage";
 import HomePage from "./pages/HomePage";
 import UserFormPage from "./pages/UserFormPage";
+import PurchasesPage from "./pages/PurchasesPage";
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -44,6 +45,14 @@ export default function App() {
           element={
             <PrivateRoute>
               <UsersPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/purchases"
+          element={
+            <PrivateRoute>
+              <PurchasesPage />
             </PrivateRoute>
           }
         />

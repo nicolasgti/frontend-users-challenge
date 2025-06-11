@@ -18,6 +18,7 @@ import {
   People,
   ChevronLeft,
   ChevronRight,
+  ShoppingCart,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
@@ -155,6 +156,31 @@ const Sidebar: React.FC<SidebarProps> = ({ open, toggleSidebar }) => {
             </ListItemButton>
           </List>
         </Collapse>
+        <ListItemButton
+          onClick={() => navigate('/purchases')}
+          sx={{
+            my: 0.5,
+            mx: 1,
+            borderRadius: 1,
+            backgroundColor: '#066b75',
+            minHeight: 36,
+            px: 1.5,
+            '& .MuiListItemIcon-root': {
+              color: '#fff',
+              minWidth: 32,
+            },
+            '& .MuiTypography-root': {
+              fontSize: '14px',
+              fontWeight: 500,
+              color: '#fff',
+            },
+          }}
+        >
+          <ListItemIcon>
+            <ShoppingCart fontSize="small" />
+          </ListItemIcon>
+          {open && <ListItemText primary="Compras" />}
+        </ListItemButton>
       </List>
 
 
